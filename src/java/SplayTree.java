@@ -2,12 +2,34 @@ public class SplayTree<T> {
 
     private SplayNode root;
 
-
-    public T find(T target) {
-
+    public void insert(T target) {
+        root = insertNode(root, target);
     }
 
-    public SplayNode findNode(SplayNode node, Object target) {
+    private SplayNode insertNode(SplayNode node, Object target) {
+        if (node == null) {
+            node = new SplayNode();
+            node.element = target;
+            return node;
+        } else if (node.element.hashCode() == target.hashCode()) {
+            return node;
+        } else if (node.element.hashCode() > target.hashCode()) {
+            node.left = insertNode(node.left, target);
+        } else if (node.element.hashCode() < target.hashCode()) {
+            node.right = insertNode(node.right, target);
+        }
+        return node;
+    }
+
+    public T find(T target) {
+        root = findNode(root, target);
+        if (root != null && root.element.hashCode() == target.hashCode()) {
+            return target;
+        }
+        return null;
+    }
+
+    private SplayNode findNode(SplayNode node, Object target) {
         if (node == null)
             return null;
         if (node.element.hashCode() > target.hashCode()) {
